@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>eeduro_delta</name>
+  <version>0.0.0</version>
+  <description>The eeduro_delta package</description>
+
+  <maintainer email="manuel@todo.todo">manuel</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+	<exec_depend>eeduro_delta_gazebo</exec_depend>
+	<exec_depend>eeduro_delta_description</exec_depend>
+
+  <export>
+		<metapackage/>
+  </export>
+</package>

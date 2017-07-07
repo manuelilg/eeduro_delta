@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<robot name="eeduro_delta">
+
+
+<link name="world"/>
+
+<joint name="fix_to_world" type="fixed">
+	<parent link="world"/>
+	<child link="base_link"/>
+<!--	<origin/> -->
+</joint>
+
+<link name="base_link">
+	<visual>
+		<geometry>
+			<mesh filename="package://eeduro_delta_description/meshes/delta_base.dae"/>
+<!--			<box size="0.2 0.2 0.2"/> -->
+		</geometry>
+	</visual>
+	<collision>
+		<geometry>
+			<mesh filename="package://eeduro_delta_description/meshes/delta_base_collision.dae"/>
+<!--			<box size="0.2 0.2 0.2"/> -->
+		</geometry>
+	</collision>
+	<inertial>
+		<mass value="1.0"/>
+		<inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+	</inertial>
+</link>
+
+<joint name="joint_motor_arm1" type="continuous">
+	<parent link="base_link"/>
+	<child link="link_motor_arm1"/>
+	<origin xyz="0.04 -0.052735026919 0.195" rpy="-1.570796327 0 3.141592654"/>
+	<axis xyz="1 0 0"/>
+</joint>
+
+<link name="link_motor_arm1">
+	<visual>
+    <origin xyz="0 0 0" rpy="0 1.570796327 0"/>
+    <geometry>
+      <cylinder radius="0.006" length="0.018"/>
+    </geometry>
+  </visual>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.01"/>
+    <inertia ixx="6.5e-8" ixy="0" ixz="0" iyy="8.5e-8" iyz="0" izz="8.5e-8"/>
+  </inertial>
+</link>
+
+<joint name="joint0_arm1" type="continuous">
+	<parent link="base_link"/>
+	<child link="link1_arm1"/>
+	<origin xyz="0 -0.052735026919 0.195" rpy="-2 0 3.141592654"/>
+	<axis xyz="1 0 0"/>
+	<!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
+</joint>
+
+<link name="link1_arm1">
+	<visual>
+		<origin xyz="0 0 0.024" rpy="0 0 0"/>
+		<geometry>
+			<box size="0.01 0.01  0.06"/>
+		</geometry>
+	</visual>
+	<inertial>
+		<origin xyz="0 0 0.03" rpy="0 0 0"/>
+		<mass value="1"/>
+		<inertia ixx="3.6379e-6" ixy="0" ixz="0" iyy="3.533e-6" iyz="0" izz="1.749e-7"/>
+	</inertial>
+</link>
+
+<gazebo>
+	<joint name="gear_arm1" type="gearbox">
+		<parent>link_motor_arm1</parent>
+		<child>link1_arm1</child>
+		<gearbox_reference_body>base_link</gearbox_reference_body>
+		<gearbox_ratio>-0.013176411</gearbox_ratio>
+		<axis>
+			<xyz>1 0 0</xyz>
+		</axis>
+    <axis2>
+      <xyz>1 0 0</xyz>
+    </axis2>
+	</joint>
+</gazebo>
+<!--
+<joint name="joint1_arm1" type="continuous">
+	<parent link="link1_arm1"/>
+	<child link="link2_arm1"/>
+	<origin xyz="0 0 0.05" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+</joint>
+
+<link name="link2_arm1">
+	<visual>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<geometry>
+      <box size="0.042 0.006 0.006"/>
+    </geometry>
+	</visual>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+  </inertial>
+</link>
+
+<joint name="joint2_arm1" type="continuous">
+	<parent link="link2_arm1"/>
+	<child link="link3_arm1"/>
+	<origin xyz="0 0 0" rpy="0 0 -1.570796327"/>
+	<axis xyz="1 0 0"/>
+</joint>
+	
+<link name="link3_arm1">
+  <visual>
+		<origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.005 0.005 0.1"/>
+    </geometry>
+  </visual>
+  <inertial>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+  </inertial>
+</link>
+
+<joint name="joint3_arm1" type="continuous">
+  <parent link="link3_arm1"/>
+  <child link="link4_arm1"/>
+  <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  <axis xyz="1 0 0"/>
+</joint>
+
+<link name="link4_arm1">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 1.570796327"/>
+    <geometry>
+      <box size="0.042 0.006 0.006"/>
+    </geometry>
+  </visual>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+  </inertial>
+</link>
+-->
+<gazebo>
+	
+</gazebo>
+
+</robot>
