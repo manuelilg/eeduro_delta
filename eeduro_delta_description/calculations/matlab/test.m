@@ -1,0 +1,36 @@
+clear all;
+clc;
+
+list = [];
+
+a = body;
+a.name = 'Body1';
+a.V = 100;
+a.roh = 1;
+a.m = a.V * a.roh;
+a.CoM = [10 0 0]';
+a.I = [100 0 0; 0 100 0; 0 0 100];
+list = [list, a];
+
+% b = body;
+% b.name = 'Body1';
+% b.V = 100;
+% b.roh = 1;
+% b.m = b.V * b.roh;
+% b.CoM = [-10 0 0]';
+% b.I = [100 0 0; 0 100 0; 0 0 100];
+% list = [list, b];
+
+% b= a.copy();
+% b.CoM = [-10 0 0]';
+% list = [list, b];
+
+b= a.copy();
+b.rotateAroundAxis([0 0 0]', [0 0 1]', 4*pi/6);
+list = [list, b];
+
+c= b.copy();
+c.rotateAroundAxis([0 0 0]', [0 0 1]', 4*pi/6);
+list = [list, c];
+
+comp = compound_bodys(list)
