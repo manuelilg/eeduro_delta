@@ -33,4 +33,10 @@ c= b.copy();
 c.rotateAroundAxis([0 0 0]', [0 0 1]', 4*pi/6);
 list = [list, c];
 
+
+d = body;
+d.CoM = [0.5 1 1.5]';
+d.I = [6.5 0 0; 0 5 0; 0 0 2.5];
+d.rotateAroundAxis([0 0 0]', [0 1 1]', 50/180*pi);
+
 comp = compound_bodys(list)

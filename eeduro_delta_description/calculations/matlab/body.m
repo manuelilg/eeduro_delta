@@ -27,7 +27,8 @@ classdef body<handle
         function rotateAroundAxis(obj, origin, axis, th)
             % angvec2r: function from robotics toolbox (Peter Corke)
             r = angvec2r(th, axis);
-            obj.CoM = r*(obj.CoM - origin) + origin;        
+            obj.CoM = r*(obj.CoM - origin) + origin;
+            obj.I = r*obj.I*r';
         end
     end
 end
