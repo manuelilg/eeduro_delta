@@ -40,6 +40,7 @@
 	<child link="link_motor_arm1"/>
 	<origin xyz="0.04 -0.052735026919 0.195" rpy="-1.570796327 0 3.141592654"/>
 	<axis xyz="1 0 0"/>
+	<dynamics damping="0.0000001"/>
 </joint>
 
 <link name="link_motor_arm1">
@@ -62,6 +63,7 @@
 	<origin xyz="0 -0.052735026919 0.195" rpy="-2 0 3.141592654"/>
 	<axis xyz="1 0 0"/>
 	<!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
+	<dynamics damping="0.0001"/>
 </joint>
 
 <link name="link1_arm1">
@@ -104,7 +106,7 @@
 	<child link="link2_arm1"/>
 	<origin xyz="0 0 0.05" rpy="0 0 0"/>
 	<axis xyz="1 0 0"/>
-	<!--<dynamics damping="0.7"/>-->
+	<dynamics damping="0.00001"/>
 </joint>
 
 <link name="link2_arm1">
@@ -132,6 +134,7 @@
 	<child link="link3_0_arm1"/>
 	<origin xyz="0.018 0 0" rpy="0 0 -1.570796327"/>
 	<axis xyz="1 0 0"/>
+	<dynamics damping="0.00001"/>
 </joint>
 	
 <link name="link3_0_arm1">
@@ -160,6 +163,7 @@
   <child link="link3_1_arm1"/>
   <origin xyz="-0.018 0 0" rpy="0 0 -1.570796327"/>
   <axis xyz="1 0 0"/>
+	<dynamics damping="0.00001"/>
 </joint>
 
 <link name="link3_1_arm1">
@@ -187,6 +191,7 @@
   <child link="link4_arm1"/>
   <origin xyz="0 0 0.1" rpy="0 0 0"/>
   <axis xyz="1 0 0"/>
+	<dynamics damping="0.00001"/>
 </joint>
 
 <link name="link4_arm1">
@@ -221,33 +226,16 @@
 			<lower>-1e+16</lower>
 			<upper>1e+16</upper>
 		</limit>
+		<dynamics>
+			<damping>0.00001</damping>
+		</dynamics>
 	</axis>
 </joint>
-
-<!--
-<joint name="joint3_1_arm1" type="revolute">
-  <parent>link4_arm1</parent>
-  <child>link3_1_arm1</child>
-  <pose>0 0 0.1 0 0 0</pose>
-  <axis>
-		<use_parent_model_frame>true</use_parent_model_frame>
-    <xyz>0 1 0</xyz>
-    <limit>
-      <lower>-1e+16</lower>
-      <upper>1e+16</upper>
-    </limit>
-  </axis>
-</joint>
--->
 </gazebo>
+
 
 <!--
 <gazebo reference="joint1_arm1">
-	<axis>
-		<dynamics>
-			<damping>1000</damping>
-		</dynamics>
-	</axis>
 </gazebo>
 -->
 
