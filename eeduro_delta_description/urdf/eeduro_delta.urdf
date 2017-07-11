@@ -14,13 +14,14 @@
 	<visual>
 		<geometry>
 			<mesh filename="package://eeduro_delta_description/meshes/delta_base.dae"/>
-<!--			<box size="0.2 0.2 0.2"/> -->
+				<!--<box size="0.2 0.2 0.2"/>-->
 		</geometry>
 	</visual>
 	<collision>
+		<!-- only for box <origin xyz="0 0.03 0.01"/> --> 
 		<geometry>
 			<mesh filename="package://eeduro_delta_description/meshes/delta_base_collision.dae"/>
-<!--			<box size="0.2 0.2 0.2"/> -->
+			<!--<box size="0.23 0.2 0.02"/>-->
 		</geometry>
 	</collision>
 	<inertial>
@@ -60,7 +61,7 @@
 <joint name="joint0_arm1" type="continuous">
 	<parent link="base_link"/>
 	<child link="link1_arm1"/>
-	<origin xyz="0 -0.052735026919 0.195" rpy="-2 0 3.141592654"/>
+	<origin xyz="0 -0.052735026919 0.195" rpy="-2.042035225 0 3.141592654"/>
 	<axis xyz="1 0 0"/>
 	<!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
 	<dynamics damping="0.0001"/>
@@ -104,7 +105,7 @@
 <joint name="joint1_arm1" type="continuous">
 	<parent link="link1_arm1"/>
 	<child link="link2_arm1"/>
-	<origin xyz="0 0 0.05" rpy="0 0 0"/>
+	<origin xyz="0 0 0.05" rpy="-1.919862177 0 0"/>
 	<axis xyz="1 0 0"/>
 	<dynamics damping="0.00001"/>
 </joint>
@@ -214,6 +215,7 @@
   </inertial>
 </link>
 
+
 <gazebo>
 <joint name="joint3_1_arm1" type="revolute">
 	<child>link4_arm1</child>
@@ -234,9 +236,52 @@
 </gazebo>
 
 
+<joint name="joint4_arm1" type="continuous">
+	<parent link="link4_arm1"/>
+	<child link="tool"/>
+	<origin xyz="0 -0.018 0" rpy="-0.733038286 0 1.570796327"/>
+	<axis xyz="1 0 0"/>
+	<dynamics damping="0.00001"/>
+</joint>
+
+<link name="tool">
+	<visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+			<mesh filename="package://eeduro_delta_description/meshes/tool_scaled.dae"/>
+    </geometry>
+  </visual>
+	<collision>
+		<origin xyz="0 0 0.023" rpy="1.570796327 0 0"/>
+    <geometry>
+			<cylinder radius="0.007" length="0.051"/>
+    </geometry>
+	</collision>
+  <inertial>
+    <origin xyz="2.59861008225168e-05 0.00192804788388403 0.022995128907788" rpy="0 0 0"/>
+    <mass value="0.05741035631797"/>
+    <inertia	ixx="1.98534599648007e-05" 
+							ixy="-5.03744139689366e-09"
+							ixz="8.28383830393447e-10"
+							iyy="5.51924419052098e-06" 
+							iyz="1.3955126250812e-08" 
+							izz="1.98271230263828e-05"/>
+  </inertial>
+</link>
+
+
 <!--
 <gazebo reference="joint1_arm1">
 </gazebo>
 -->
+
+<gazebo reference="base_link">
+	<selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="tool">
+  <selfCollide>true</selfCollide>
+</gazebo>
+
 
 </robot>

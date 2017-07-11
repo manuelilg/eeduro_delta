@@ -193,3 +193,10 @@ w.I = [ 136.594102856	-8.73114913702E-11	5.82076609135E-11;
 list = [list, w];
 
 comp = compound_bodys(list);
+comp.CoM = comp.CoM + [23 -25.5 0]';
+r = roty(-90, 'deg');
+
+comp.CoM = r * comp.CoM;
+comp.I = r * comp.I * r';
+comp.CoM = comp.CoM * 1e-3; % from mm to m
+comp.I = comp.I * 1e-6; % from kg mm² to kg m²
