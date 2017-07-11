@@ -78,3 +78,9 @@ list = [list, h];
 
 
 comp = compound_bodys(list);
+comp.CoM = comp.CoM + [0 0 0]';
+r = rotz(90, 'deg') * roty(-90, 'deg');
+comp.CoM = r * comp.CoM;
+comp.I = r * comp.I * r';
+comp.CoM = comp.CoM * 1e-3; % from mm to m
+comp.I = comp.I * 1e-6; % from kg mm² to kg m²

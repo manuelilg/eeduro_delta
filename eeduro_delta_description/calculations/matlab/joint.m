@@ -74,7 +74,18 @@ i.m = i.V * i.roh;
 i.CoM = [-3.8546943415E-13	2.90611978926E-12	-3.12638803734E-12]';
 i.I = [ 2761.87974191	1.81898940355E-12	3.63797880709E-12;
         1.81898940355E-12	2761.87974191	-5.82076609135E-11;
-        3.63797880709E-12	-5.82076609135E-11	34.2513366241] %.* i.roh;
+        3.63797880709E-12	-5.82076609135E-11	34.2513366241] .* i.roh;
 list = [list, i];
 
 comp = compound_bodys(list);
+% link 2
+% comp.CoM = comp.CoM + [0 0 0]';
+% r = roty(90, 'deg');
+% link 4
+comp.CoM = comp.CoM + [0 0 18]';
+r = rotz(90, 'deg') * roty(-90, 'deg');
+
+comp.CoM = r * comp.CoM;
+comp.I = r * comp.I * r';
+comp.CoM = comp.CoM * 1e-3; % from mm to m
+comp.I = comp.I * 1e-6; % from kg mm² to kg m²

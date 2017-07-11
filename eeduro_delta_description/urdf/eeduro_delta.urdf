@@ -24,8 +24,14 @@
 		</geometry>
 	</collision>
 	<inertial>
-		<mass value="1.0"/>
-		<inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+		<origin xyz="-3.61483029333e-10 0.0127334577336 0.0879729092856" rpy="0 0 0"/>
+		<mass value="1.9"/>
+		<inertia	ixx="0.02085588597106"
+							ixy="-1.660569664432e-10"
+							ixz="-1.1398676896544e-10"
+							iyy="0.02129590096144"
+							iyz="0.0016993275934572"
+							izz="0.019156198852616"/>
 	</inertial>
 </link>
 
@@ -60,15 +66,21 @@
 
 <link name="link1_arm1">
 	<visual>
-		<origin xyz="0 0 0.024" rpy="0 0 0"/>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
-			<box size="0.01 0.01  0.06"/>
+			<!--<box size="0.01 0.01  0.06"/>-->
+			<mesh filename="package://eeduro_delta_description/meshes/link1_scaled.dae"/>
 		</geometry>
 	</visual>
 	<inertial>
-		<origin xyz="0 0 0.03" rpy="0 0 0"/>
-		<mass value="1"/>
-		<inertia ixx="3.6379e-6" ixy="0" ixz="0" iyy="3.533e-6" iyz="0" izz="1.749e-7"/>
+		<origin xyz="-0.000667579518792749 4.24024711964181e-05 0.0237382053187016" rpy="0 0 0"/>
+		<mass value="0.01225732594264"/>
+		<inertia	ixx="3.9170528247202e-06"
+							ixy="6.88244852580979e-11"
+							ixz="-4.1443351708254e-08"
+							iyy="3.81032017743918e-06"
+							iyz="1.23377194660718e-08" 
+							izz="1.78939838618822e-07"/>
 	</inertial>
 </link>
 
@@ -86,51 +98,92 @@
     </axis2>
 	</joint>
 </gazebo>
-<!--
+
 <joint name="joint1_arm1" type="continuous">
 	<parent link="link1_arm1"/>
 	<child link="link2_arm1"/>
 	<origin xyz="0 0 0.05" rpy="0 0 0"/>
 	<axis xyz="1 0 0"/>
+	<!--<dynamics damping="0.7"/>-->
 </joint>
 
 <link name="link2_arm1">
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
-      <box size="0.042 0.006 0.006"/>
+			<mesh filename="package://eeduro_delta_description/meshes/link2_scaled.dae"/>
+      <!--<box size="0.042 0.006 0.006"/>-->
     </geometry>
 	</visual>
   <inertial>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <mass value="1.0"/>
-    <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+    <origin xyz="-4.65883028011777e-16 0.000173858781653159 5.67176538207829e-17" rpy="0 0 0"/>
+    <mass value="0.002676077437253"/>
+    <inertia	ixx="2.12767184543771e-08"	
+							ixy="-5.53089204125579e-22"
+							ixz="-3.40282030897929e-10"
+							iyy="5.08472734636316e-07" 
+							iyz="1.63502204451954e-23"
+							izz="5.19396055186747e-07"/>
   </inertial>
 </link>
 
-<joint name="joint2_arm1" type="continuous">
+<joint name="joint2_0_arm1" type="continuous">
 	<parent link="link2_arm1"/>
-	<child link="link3_arm1"/>
-	<origin xyz="0 0 0" rpy="0 0 -1.570796327"/>
+	<child link="link3_0_arm1"/>
+	<origin xyz="0.018 0 0" rpy="0 0 -1.570796327"/>
 	<axis xyz="1 0 0"/>
 </joint>
 	
-<link name="link3_arm1">
+<link name="link3_0_arm1">
   <visual>
-		<origin xyz="0 0 0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <box size="0.005 0.005 0.1"/>
+			<mesh filename="package://eeduro_delta_description/meshes/link3_scaled.dae"/>
+      <!--<box size="0.005 0.005 0.1"/>-->
     </geometry>
   </visual>
   <inertial>
-    <origin xyz="0 0 0.05" rpy="0 0 0"/>
-    <mass value="1.0"/>
-    <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+    <origin xyz="4.79435653399733e-15 5.05515762210611e-15 0.05" rpy="0 0 0"/>
+    <mass value="0.00303456300894497"/>
+    <inertia	ixx="3.21114513230401e-06"
+							ixy="-1.39831896086795e-22"
+							ixz="-1.65818121965606e-19"
+							iyy="3.20896476471281e-06"
+							iyz="-7.25104237772119e-20"
+							izz="5.81686125403351e-09"/>
   </inertial>
 </link>
 
-<joint name="joint3_arm1" type="continuous">
-  <parent link="link3_arm1"/>
+
+<joint name="joint2_1_arm1" type="continuous">
+  <parent link="link2_arm1"/>
+  <child link="link3_1_arm1"/>
+  <origin xyz="-0.018 0 0" rpy="0 0 -1.570796327"/>
+  <axis xyz="1 0 0"/>
+</joint>
+
+<link name="link3_1_arm1">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://eeduro_delta_description/meshes/link3_scaled.dae"/>
+      <!--<box size="0.005 0.005 0.1"/>-->
+    </geometry>
+  </visual>
+  <inertial>
+    <origin xyz="4.79435653399733e-15 5.05515762210611e-15 0.05" rpy="0 0 0"/>
+    <mass value="0.00303456300894497"/>
+    <inertia  ixx="3.21114513230401e-06"
+              ixy="-1.39831896086795e-22"
+              ixz="-1.65818121965606e-19"
+              iyy="3.20896476471281e-06"
+              iyz="-7.25104237772119e-20"
+              izz="5.81686125403351e-09"/>
+  </inertial>
+</link>
+
+<joint name="joint3_0_arm1" type="continuous">
+  <parent link="link3_0_arm1"/>
   <child link="link4_arm1"/>
   <origin xyz="0 0 0.1" rpy="0 0 0"/>
   <axis xyz="1 0 0"/>
@@ -138,20 +191,64 @@
 
 <link name="link4_arm1">
   <visual>
-    <origin xyz="0 0 0" rpy="0 0 1.570796327"/>
+    <origin xyz="0 -0.018 0" rpy="0 0 1.570796327"/>
     <geometry>
-      <box size="0.042 0.006 0.006"/>
+			<mesh filename="package://eeduro_delta_description/meshes/link2_scaled.dae"/>
+      <!--<box size="0.042 0.006 0.006"/>-->
     </geometry>
   </visual>
   <inertial>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <mass value="1.0"/>
-    <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+		<origin xyz="-0.00017385878165316 -0.0179999999999995 -5.56154717015503e-17" rpy="0 0 0"/>
+    <mass value="0.002676077437253"/>
+    <inertia  ixx="5.08472734636316e-07"
+              ixy="-5.82921356214306e-22"
+              ixz="1.63293841801982e-23"
+              iyy="2.12767184543771e-08"
+              iyz="-3.40282030897868e-10"
+              izz="5.19396055186747e-07"/>
   </inertial>
 </link>
--->
+
 <gazebo>
-	
+<joint name="joint3_1_arm1" type="revolute">
+	<child>link4_arm1</child>
+	<parent>link3_1_arm1</parent>
+	<pose>0 -0.036 0 0 0 0</pose>
+	<axis>
+		<use_parent_model_frame>false</use_parent_model_frame>
+		<xyz>1 0 0</xyz>
+		<limit>
+			<lower>-1e+16</lower>
+			<upper>1e+16</upper>
+		</limit>
+	</axis>
+</joint>
+
+<!--
+<joint name="joint3_1_arm1" type="revolute">
+  <parent>link4_arm1</parent>
+  <child>link3_1_arm1</child>
+  <pose>0 0 0.1 0 0 0</pose>
+  <axis>
+		<use_parent_model_frame>true</use_parent_model_frame>
+    <xyz>0 1 0</xyz>
+    <limit>
+      <lower>-1e+16</lower>
+      <upper>1e+16</upper>
+    </limit>
+  </axis>
+</joint>
+-->
 </gazebo>
+
+<!--
+<gazebo reference="joint1_arm1">
+	<axis>
+		<dynamics>
+			<damping>1000</damping>
+		</dynamics>
+	</axis>
+</gazebo>
+-->
 
 </robot>
