@@ -5,8 +5,7 @@
 		<arg name="paused" value="$(arg paused)"/>
 	</include>
 
-	<param name="robot_description" command="cat $(find eeduro_delta_description)/urdf/eeduro_delta.urdf"/>
-<!--	<param name="robot_description" command="cat $(find motor_description)/urdf/motor.urdf"/> -->
+	<param name="robot_description" command="xacro '$(find eeduro_delta_description)/urdf/eeduro_delta.urdf.xacro'"/>
 
 	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 		args="-urdf -model eeduro_delta -param robot_description"/>

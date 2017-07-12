@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<robot name="eeduro_delta" xmlns:xacro="http://ww.ros.org/wiki/xacro">
+
+	<xacro:property name="pi" value="3.1415926535897931"/>
+
+	<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta_inertial.urdf.xacro"/>
+	<!--<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta.gazebo.xacro"/>-->
+
+	<link name="world"/>
+
+	<gazebo reference="world">
+		<static>true</static>
+	</gazebo>
+
+	
+	<joint name="fix_to_world" type="fixed">
+	  <parent link="world"/>
+		<child link="base_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+	</joint>
+
+	
+	<link name="base_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://eeduro_delta_description/meshes/delta_base.dae"/>
+			</geometry>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://eeduro_delta_description/meshes/delta_base_collision.dae"/>
+			</geometry>
+		</collision>
+		<xacro:base_link_inertial/>
+	</link>
+
+<!--
+  <inertial>
+    <origin xyz="-3.61483029333e-10 0.0127334577336 0.0879729092856" rpy="0 0 0"/>
+    <mass value="1.9"/>
+    <inertia  ixx="0.02085588597106"
+              ixy="-1.660569664432e-10"
+              ixz="-1.1398676896544e-10"
+              iyy="0.02129590096144"
+              iyz="0.0016993275934572"
+              izz="0.019156198852616"/>
+  </inertial>
+-->
+	
+
+
+</robot>
+
