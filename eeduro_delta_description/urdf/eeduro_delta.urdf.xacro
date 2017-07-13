@@ -38,17 +38,43 @@
 	<xacro:delta_arm parent="base_link" arm_nr="1"/>
 
 
+	<link name="tool">
+	  <visual>
+	    <origin xyz="0 0 0" rpy="0 0 0"/>
+	    <geometry>
+	      <mesh filename="package://eeduro_delta_description/meshes/tool_scaled.dae"/>
+	    </geometry>
+	  </visual>
+	  <collision>
+	    <origin xyz="0 0 0.023" rpy="${pi/2} 0 0"/>
+	    <geometry>
+	      <cylinder radius="0.007" length="0.051"/>
+	    </geometry>
+	  </collision>
+		<xacro:tool_inertial/>
+	</link>
+
+
+	<gazebo reference="base_link">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="tool">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+
 	<xacro:macro name="delta_arm" params="parent arm_nr">
 		<joint name="arm${arm_nr}_motor_joint" type="continuous">
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_motor"/>
-		  <origin xyz="0.04 -0.052735026919 0.195" rpy="-1.570796327 0 3.141592654"/>
+		  <origin xyz="0.04 -0.052735026919 0.195" rpy="${-pi/2} 0 ${pi}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.0000001"/>
 		</joint>
 		<link name="arm${arm_nr}_motor">
 	  <visual>
-	    <origin xyz="0 0 0" rpy="0 1.570796327 0"/>
+	    <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
 	    <geometry>
 	      <cylinder radius="0.006" length="0.018"/>
 	    </geometry>
@@ -60,7 +86,7 @@
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_link1"/>
 		  <!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
-		  <origin xyz="0 -0.052735026919 0.195" rpy="-2.042035225 0 3.141592654"/>
+		  <origin xyz="0 -0.052735026919 0.195" rpy="${(-90-27)/180 *pi} 0 ${pi}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.0001"/>
 		</joint>
@@ -94,7 +120,7 @@
 		<joint name="arm${arm_nr}_joint1" type="continuous">
 		  <parent link="arm${arm_nr}_link1"/>
 		  <child link="arm${arm_nr}_link2"/>
-		  <origin xyz="0 0 0.05" rpy="-1.919862177 0 0"/>
+		  <origin xyz="0 0 0.05" rpy="${(-110)/180*pi} 0 0"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.00001"/>
 		</joint>
@@ -115,7 +141,7 @@
 
 		<link name="arm${arm_nr}_link4">
 		  <visual>
-		    <origin xyz="0 -0.018 0" rpy="0 0 1.570796327"/>
+		    <origin xyz="0 -0.018 0" rpy="0 0 ${pi/2}"/>
 		    <geometry>
 		      <mesh filename="package://eeduro_delta_description/meshes/link2_scaled.dae"/>
 		    </geometry>
@@ -127,7 +153,7 @@
 		<joint name="arm${arm_nr}_joint4" type="continuous">
 		  <parent link="arm${arm_nr}_link4"/>
 		  <child link="tool"/>
-		  <origin xyz="0 -0.018 0" rpy="-0.733038286 0 1.570796327"/>
+		  <origin xyz="0 -0.018 0" rpy="${(-43)/180*pi} 0 ${pi/2}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.00001"/>
 		</joint>
@@ -138,7 +164,7 @@
 		<joint name="arm${arm_nr}_joint2${suffix}" type="continuous">
 		  <parent link="arm${arm_nr}_link2"/>
 		  <child link="arm${arm_nr}_link3${suffix}"/>
-		  <origin xyz="${sign}0.018 0 0" rpy="0 0 -1.570796327"/>
+		  <origin xyz="${sign}0.018 0 0" rpy="0 0 ${-pi/2}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.00001"/>
 		</joint>
@@ -186,31 +212,4 @@
 		</gazebo>
   </xacro:macro>
 
-
-	<link name="tool">
-	  <visual>
-	    <origin xyz="0 0 0" rpy="0 0 0"/>
-	    <geometry>
-	      <mesh filename="package://eeduro_delta_description/meshes/tool_scaled.dae"/>
-	    </geometry>
-	  </visual>
-	  <collision>
-	    <origin xyz="0 0 0.023" rpy="1.570796327 0 0"/>
-	    <geometry>
-	      <cylinder radius="0.007" length="0.051"/>
-	    </geometry>
-	  </collision>
-		<xacro:tool_inertial/>
-	</link>
-
-
-	<gazebo reference="base_link">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="tool">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
 </robot>
-
