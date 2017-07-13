@@ -61,4 +61,17 @@
 	  </inertial>
 	</xacro:macro>
 
+	<xacro:macro name="link4_inertial">
+		<inertial>
+	    <origin xyz="-0.00017385878165316 -0.0179999999999995 -5.56154717015503e-17" rpy="0 0 0"/>
+	    <mass value="0.002676077437253"/>
+	    <inertia  ixx="5.08472734636316e-07"
+	              ixy="-5.82921356214306e-22"
+	              ixz="1.63293841801982e-23"
+	              iyy="2.12767184543771e-08"
+	              iyz="-3.40282030897868e-10"
+	              izz="5.19396055186747e-07"/>
+	  </inertial>
+	</xacro:macro>
+
 </robot>

@@ -110,12 +110,22 @@
 		</link>
 
 		
-		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix=".1" sign="+"/>
-		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix=".2" sign="-"/>
+		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix="_1" sign="+" joint3_type="urdf"/>
+		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix=".2" sign="-" joint3_type="sdf"/>
+
+		<link name="arm${arm_nr}_link4">
+		  <visual>
+		    <origin xyz="0 -0.018 0" rpy="0 0 1.570796327"/>
+		    <geometry>
+		      <mesh filename="package://eeduro_delta_description/meshes/link2_scaled.dae"/>
+		    </geometry>
+		  </visual>
+			<xacro:link4_inertial/>
+		</link>
 
 	</xacro:macro>
 
-	<xacro:macro name="link3_with_joint" params="arm_nr suffix sign">
+	<xacro:macro name="link3_with_joint" params="arm_nr suffix sign joint3_type">
 		<joint name="arm${arm_nr}_joint2${suffix}" type="continuous">
 		  <parent link="arm${arm_nr}_link2"/>
 		  <child link="arm${arm_nr}_link3${suffix}"/>
@@ -123,6 +133,7 @@
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.00001"/>
 		</joint>
+
 		<link name="arm${arm_nr}_link3${suffix}">
 		  <visual>
 		    <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -132,8 +143,39 @@
 		  </visual>
 			<xacro:link3_inertial/>
 		</link>
+		<xacro:element xacro:name="joint3_${joint3_type}" arm_nr="${arm_nr}" suffix="${suffix}"/>
 	</xacro:macro>
 
+	<xacro:macro name="joint3_urdf" params="arm_nr suffix">
+			<joint name="arm${arm_nr}_link3${suffix}" type="continuous">
+			  <parent link="arm${arm_nr}_link3${suffix}"/>
+			  <child link="arm${arm_nr}_link4"/>
+			  <origin xyz="0 0 0.1" rpy="0 0 0"/>
+			  <axis xyz="1 0 0"/>
+			  <dynamics damping="0.00001"/>
+			</joint>
+	</xacro:macro>
+
+	<xacro:macro name="joint3_sdf" params="arm_nr suffix">
+		<gazebo>
+			<joint name="arm${arm_nr}_joint3${suffix}" type="revolute">
+			  <child>arm${arm_nr}_link4</child>
+			  <parent>arm${arm_nr}_link3${suffix}</parent>
+			  <pose>0 -0.036 0 0 0 0</pose>
+			  <axis>
+			    <use_parent_model_frame>false</use_parent_model_frame>
+			    <xyz>1 0 0</xyz>
+			    <limit>
+			      <lower>-1e+16</lower>
+			      <upper>1e+16</upper>
+			    </limit>
+			    <dynamics>
+			      <damping>0.00001</damping>
+			    </dynamics>
+			  </axis>
+			</joint>
+		</gazebo>
+  </xacro:macro>
 
 </robot>
 
