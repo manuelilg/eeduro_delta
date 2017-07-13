@@ -35,7 +35,14 @@
 	</link>
 
 
-	<xacro:delta_arm parent="base_link" arm_nr="1"/>
+	<xacro:delta_arm 
+		parent="base_link" 
+		arm_end_child="tool" 
+		arm_nr="1" 
+		joint4_type="urdf"
+		angle1="${(-90-27)/180 *pi}"
+		angle2="${(-110)/180*pi}"
+		angle3="${(-43)/180*pi}"/>
 
 
 	<link name="tool">
@@ -64,7 +71,7 @@
 	</gazebo>
 
 
-	<xacro:macro name="delta_arm" params="parent arm_nr">
+	<xacro:macro name="delta_arm" params="parent arm_end_child arm_nr joint4_type angle1 angle2 angle3">
 		<joint name="arm${arm_nr}_motor_joint" type="continuous">
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_motor"/>
@@ -86,7 +93,7 @@
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_link1"/>
 		  <!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
-		  <origin xyz="0 -0.052735026919 0.195" rpy="${(-90-27)/180 *pi} 0 ${pi}"/>
+		  <origin xyz="0 -0.052735026919 0.195" rpy="${angle1} 0 ${pi}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.0001"/>
 		</joint>
@@ -94,7 +101,6 @@
 		  <visual>
 		    <origin xyz="0 0 0" rpy="0 0 0"/>
 		    <geometry>
-		      <!--<box size="0.01 0.01  0.06"/>-->
 		      <mesh filename="package://eeduro_delta_description/meshes/link1_scaled.dae"/>
 		    </geometry>
 		  </visual>
@@ -120,7 +126,7 @@
 		<joint name="arm${arm_nr}_joint1" type="continuous">
 		  <parent link="arm${arm_nr}_link1"/>
 		  <child link="arm${arm_nr}_link2"/>
-		  <origin xyz="0 0 0.05" rpy="${(-110)/180*pi} 0 0"/>
+		  <origin xyz="0 0 0.05" rpy="${angle2} 0 0"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.00001"/>
 		</joint>
@@ -149,15 +155,7 @@
 			<xacro:link4_inertial/>
 		</link>
 
-		
-		<joint name="arm${arm_nr}_joint4" type="continuous">
-		  <parent link="arm${arm_nr}_link4"/>
-		  <child link="tool"/>
-		  <origin xyz="0 -0.018 0" rpy="${(-43)/180*pi} 0 ${pi/2}"/>
-		  <axis xyz="1 0 0"/>
-		  <dynamics damping="0.00001"/>
-		</joint>
-		
+		<xacro:element xacro:name="joint4_${joint4_type}" arm_nr="${arm_nr}" child="${arm_end_child}" angle="${angle3}"/>
 	</xacro:macro>
 
 	<xacro:macro name="link3_with_joint" params="arm_nr suffix sign joint3_type">
@@ -211,5 +209,15 @@
 			</joint>
 		</gazebo>
   </xacro:macro>
+
+	<xacro:macro name="joint4_urdf" params="arm_nr child angle">
+		<joint name="arm${arm_nr}_joint4" type="continuous">
+		  <parent link="arm${arm_nr}_link4"/>
+		  <child link="${child}"/>
+		  <origin xyz="0 -0.018 0" rpy="${angle} 0 ${pi/2}"/>
+		  <axis xyz="1 0 0"/>
+		  <dynamics damping="0.00001"/>
+		</joint>
+	</xacro:macro>
 
 </robot>
