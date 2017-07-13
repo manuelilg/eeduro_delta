@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <robot name="eeduro_delta" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:property name="pi" value="3.1415926535897931"/>
+	<!-- <xacro:property name="pi" value="3.1415926535897931"/> -->
+	<xacro:property name="dist_origin2arm_z" value="0.21"/>
+	<xacro:property name="dist_origin2arm_xy_plane" value="${0.1/sqrt(3) -0.005}"/>
 
 	<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta_inertial.urdf.xacro"/>
 	<!--<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta.gazebo.xacro"/>-->
@@ -40,10 +42,13 @@
 		arm_end_child="tool" 
 		arm_nr="1" 
 		joint4_type="urdf"
-		angle1="${(-90-27)/180 *pi}"
+		angle1="${(-27)/180 *pi}"
 		angle2="${-0.8373228137897161 -(90-27)/180*pi}"
-		angle3="${-pi/2 + 0.8373228137897161}"/>
-
+		angle3="${-pi/2 + 0.8373228137897161}"
+		dist_xy="${dist_origin2arm_xy_plane}"
+		x="0"		y="0"		z="${dist_origin2arm_z}"
+		roll="0"		pitch="0"		yaw="${-pi/2}"
+	/>
 
 	<link name="tool">
 	  <visual>
@@ -70,12 +75,12 @@
 	  <selfCollide>true</selfCollide>
 	</gazebo>
 
-
-	<xacro:macro name="delta_arm" params="parent arm_end_child arm_nr joint4_type angle1 angle2 angle3">
+	<!-- x y z are the center of the robot, in the high:of the mounting-points for the arms -->
+	<xacro:macro name="delta_arm" params="parent arm_end_child arm_nr joint4_type angle1 angle2 angle3 dist_xy x y z roll pitch yaw">
 		<joint name="arm${arm_nr}_motor_joint" type="continuous">
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_motor"/>
-		  <origin xyz="0.04 -0.052735026919 0.195" rpy="${-pi/2} 0 ${pi}"/>
+		  <origin xyz="${x +cos(yaw)*dist_xy -sin(yaw)*(0.04)} ${y +sin(yaw)*dist_xy +cos(yaw)*(0.04)} ${z -0.015}" rpy="${roll -pi/2} ${pitch} ${yaw -pi/2}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.0000001"/>
 		</joint>
@@ -93,7 +98,7 @@
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_link1"/>
 		  <!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
-		  <origin xyz="0 -0.052735026919 0.195" rpy="${angle1} 0 ${pi}"/>
+		  <origin xyz="${x +cos(yaw)*dist_xy} ${y +sin(yaw)*dist_xy}  ${z -0.015}" rpy="${roll -pi/2  +angle1} ${pitch} ${yaw -pi/2}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.0001"/>
 		</joint>
@@ -143,7 +148,7 @@
 
 		
 		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix="_1" sign="+" joint3_type="urdf"/>
-		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix=".2" sign="-" joint3_type="sdf"/>
+		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix="_2" sign="-" joint3_type="sdf"/>
 
 		<link name="arm${arm_nr}_link4">
 		  <visual>
