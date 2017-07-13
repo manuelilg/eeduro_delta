@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="eeduro_delta" xmlns:xacro="http://ww.ros.org/wiki/xacro">
+<robot name="eeduro_delta" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 	<xacro:property name="pi" value="3.1415926535897931"/>
 
@@ -39,16 +39,13 @@
 
 
 	<xacro:macro name="delta_arm" params="parent arm_nr">
-
-		<joint name="arm${arm_nr}_joint_motor" type="continuous">
+		<joint name="arm${arm_nr}_motor_joint" type="continuous">
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_motor"/>
 		  <origin xyz="0.04 -0.052735026919 0.195" rpy="-1.570796327 0 3.141592654"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.0000001"/>
 		</joint>
-
-
 		<link name="arm${arm_nr}_motor">
 	  <visual>
 	    <origin xyz="0 0 0" rpy="0 1.570796327 0"/>
@@ -57,6 +54,83 @@
 	    </geometry>
 	  </visual>
 		<xacro:motor_inertial/>
+		</link>
+
+		<joint name="arm${arm_nr}_joint0" type="continuous">
+		  <parent link="${parent}"/>
+		  <child link="arm${arm_nr}_link1"/>
+		  <!-- callculation X: 0  Y: -70.23..+17.5  Z: 210-15 -->
+		  <origin xyz="0 -0.052735026919 0.195" rpy="-2.042035225 0 3.141592654"/>
+		  <axis xyz="1 0 0"/>
+		  <dynamics damping="0.0001"/>
+		</joint>
+		<link name="arm${arm_nr}_link1">
+		  <visual>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <geometry>
+		      <!--<box size="0.01 0.01  0.06"/>-->
+		      <mesh filename="package://eeduro_delta_description/meshes/link1_scaled.dae"/>
+		    </geometry>
+		  </visual>
+			<xacro:link1_inertial/>
+		</link>
+
+		<gazebo>
+		  <joint name="arm${arm_nr}_gearbox" type="gearbox">
+		    <parent>arm${arm_nr}_motor</parent>
+		    <child>arm${arm_nr}_link1</child>
+		    <gearbox_reference_body>${parent}</gearbox_reference_body>
+		    <gearbox_ratio>-0.013176411</gearbox_ratio>
+		    <axis>
+		      <xyz>1 0 0</xyz>
+		    </axis>
+		    <axis2>
+		      <xyz>1 0 0</xyz>
+		    </axis2>
+		  </joint>
+		</gazebo>
+
+
+		<joint name="arm${arm_nr}_joint1" type="continuous">
+		  <parent link="arm${arm_nr}_link1"/>
+		  <child link="arm${arm_nr}_link2"/>
+		  <origin xyz="0 0 0.05" rpy="-1.919862177 0 0"/>
+		  <axis xyz="1 0 0"/>
+		  <dynamics damping="0.00001"/>
+		</joint>
+
+		<link name="arm${arm_nr}_link2">
+		  <visual>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <geometry>
+		      <mesh filename="package://eeduro_delta_description/meshes/link2_scaled.dae"/>
+		    </geometry>
+		  </visual>
+			<xacro:link2_inertial/>
+		</link>
+
+		
+		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix=".1" sign="+"/>
+		<xacro:link3_with_joint arm_nr="${arm_nr}" suffix=".2" sign="-"/>
+
+	</xacro:macro>
+
+	<xacro:macro name="link3_with_joint" params="arm_nr suffix sign">
+		<joint name="arm${arm_nr}_joint2${suffix}" type="continuous">
+		  <parent link="arm${arm_nr}_link2"/>
+		  <child link="arm${arm_nr}_link3${suffix}"/>
+		  <origin xyz="${sign}0.018 0 0" rpy="0 0 -1.570796327"/>
+		  <axis xyz="1 0 0"/>
+		  <dynamics damping="0.00001"/>
+		</joint>
+		<link name="arm${arm_nr}_link3${suffix}">
+		  <visual>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <geometry>
+		      <mesh filename="package://eeduro_delta_description/meshes/link3_scaled.dae"/>
+		    </geometry>
+		  </visual>
+			<xacro:link3_inertial/>
 		</link>
 	</xacro:macro>
 
