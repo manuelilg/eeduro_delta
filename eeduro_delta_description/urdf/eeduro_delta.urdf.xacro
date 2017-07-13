@@ -50,6 +50,34 @@
 		roll="0"		pitch="0"		yaw="${-pi/2}"
 	/>
 
+	<xacro:delta_arm
+    parent="base_link"
+    arm_end_child="tool"
+    arm_nr="2"
+    joint4_type="sdf"
+    angle1="${(-27)/180 *pi}"
+    angle2="${-0.8373228137897161 -(90-27)/180*pi}"
+    angle3="${-pi/2 + 0.8373228137897161}"
+    dist_xy="${dist_origin2arm_xy_plane}"
+    x="0"   y="0"   z="${dist_origin2arm_z}"
+    roll="0"    pitch="0"   yaw="${pi/6}"
+  />
+
+	<xacro:delta_arm
+    parent="base_link"
+    arm_end_child="tool"
+    arm_nr="3"
+    joint4_type="sdf"
+    angle1="${(-27)/180 *pi}"
+    angle2="${-0.8373228137897161 -(90-27)/180*pi}"
+    angle3="${-pi/2 + 0.8373228137897161}"
+    dist_xy="${dist_origin2arm_xy_plane}"
+    x="0"   y="0"   z="${dist_origin2arm_z}"
+    roll="0"    pitch="0"   yaw="${5*pi/6}"
+  />
+
+
+
 	<link name="tool">
 	  <visual>
 	    <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -119,9 +147,11 @@
 		    <gearbox_reference_body>${parent}</gearbox_reference_body>
 		    <gearbox_ratio>-0.013176411</gearbox_ratio>
 		    <axis>
+					<use_parent_model_frame>false</use_parent_model_frame>
 		      <xyz>1 0 0</xyz>
 		    </axis>
 		    <axis2>
+					<use_parent_model_frame>false</use_parent_model_frame>
 		      <xyz>1 0 0</xyz>
 		    </axis2>
 		  </joint>
@@ -224,5 +254,27 @@
 		  <dynamics damping="0.00001"/>
 		</joint>
 	</xacro:macro>
+
+  <xacro:macro name="joint4_sdf" params="arm_nr child angle">
+    <gazebo>
+			<joint name="arm${arm_nr}_joint4" type="revolute">
+	      <parent>${child}</parent>
+	      <child>arm${arm_nr}_link4</child>
+	      <pose>0 -0.018 0 ${angle} 0 ${pi/2}</pose>
+				<axis>
+          <use_parent_model_frame>false</use_parent_model_frame>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <damping>0.00001</damping>
+          </dynamics>
+				</axis>
+	    </joint>
+		</gazebo>
+  </xacro:macro>
+
 
 </robot>
