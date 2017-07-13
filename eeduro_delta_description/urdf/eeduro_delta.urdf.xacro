@@ -123,6 +123,15 @@
 			<xacro:link4_inertial/>
 		</link>
 
+		
+		<joint name="arm${arm_nr}_joint4" type="continuous">
+		  <parent link="arm${arm_nr}_link4"/>
+		  <child link="tool"/>
+		  <origin xyz="0 -0.018 0" rpy="-0.733038286 0 1.570796327"/>
+		  <axis xyz="1 0 0"/>
+		  <dynamics damping="0.00001"/>
+		</joint>
+		
 	</xacro:macro>
 
 	<xacro:macro name="link3_with_joint" params="arm_nr suffix sign joint3_type">
@@ -176,6 +185,32 @@
 			</joint>
 		</gazebo>
   </xacro:macro>
+
+
+	<link name="tool">
+	  <visual>
+	    <origin xyz="0 0 0" rpy="0 0 0"/>
+	    <geometry>
+	      <mesh filename="package://eeduro_delta_description/meshes/tool_scaled.dae"/>
+	    </geometry>
+	  </visual>
+	  <collision>
+	    <origin xyz="0 0 0.023" rpy="1.570796327 0 0"/>
+	    <geometry>
+	      <cylinder radius="0.007" length="0.051"/>
+	    </geometry>
+	  </collision>
+		<xacro:tool_inertial/>
+	</link>
+
+
+	<gazebo reference="base_link">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="tool">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
 
 </robot>
 
