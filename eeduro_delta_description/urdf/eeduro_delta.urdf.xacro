@@ -31,22 +31,34 @@
 				<mesh filename="package://eeduro_delta_description/meshes/delta_base_collision.dae"/>
 			</geometry>
 		</collision>
-		<xacro:base_link_inertial/>
+		<xacro:base_inertial/>
 	</link>
 
-<!--
-  <inertial>
-    <origin xyz="-3.61483029333e-10 0.0127334577336 0.0879729092856" rpy="0 0 0"/>
-    <mass value="1.9"/>
-    <inertia  ixx="0.02085588597106"
-              ixy="-1.660569664432e-10"
-              ixz="-1.1398676896544e-10"
-              iyy="0.02129590096144"
-              iyz="0.0016993275934572"
-              izz="0.019156198852616"/>
-  </inertial>
--->
-	
+
+	<xacro:delta_arm parent="base_link" arm_nr="1"/>
+
+
+	<xacro:macro name="delta_arm" params="parent arm_nr">
+
+		<joint name="arm${arm_nr}_joint_motor" type="continuous">
+		  <parent link="${parent}"/>
+		  <child link="arm${arm_nr}_motor"/>
+		  <origin xyz="0.04 -0.052735026919 0.195" rpy="-1.570796327 0 3.141592654"/>
+		  <axis xyz="1 0 0"/>
+		  <dynamics damping="0.0000001"/>
+		</joint>
+
+
+		<link name="arm${arm_nr}_motor">
+	  <visual>
+	    <origin xyz="0 0 0" rpy="0 1.570796327 0"/>
+	    <geometry>
+	      <cylinder radius="0.006" length="0.018"/>
+	    </geometry>
+	  </visual>
+		<xacro:motor_inertial/>
+		</link>
+	</xacro:macro>
 
 
 </robot>

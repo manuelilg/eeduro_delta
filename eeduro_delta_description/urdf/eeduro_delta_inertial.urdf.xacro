@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="eeduro_delta" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:macro name="base_link_inertial">
+	<xacro:macro name="base_inertial">
 		<inertial>
 			<origin xyz="-3.61483029333e-10 0.0127334577336 0.0879729092856" rpy="0 0 0"/>
 			<mass value="1.9"/>
@@ -12,6 +12,14 @@
 	              iyz="0.0016993275934572"
 	             izz="0.019156198852616"/>
 		</inertial>
+	</xacro:macro>
+
+	<xacro:macro name="motor_inertial">
+		<inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="6.5e-8" ixy="0" ixz="0" iyy="8.5e-8" iyz="0" izz="8.5e-8"/>
+    </inertial>
 	</xacro:macro>
 
 </robot>
