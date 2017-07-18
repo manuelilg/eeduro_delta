@@ -200,6 +200,9 @@
 		  <origin xyz="${sign}0.018 0 0" rpy="0 0 ${-pi/2}"/>
 		  <axis xyz="1 0 0"/>
 		  <dynamics damping="0.00001"/>
+			<xacro:if value="${suffix == '_2'}">
+				<mimic joint="arm${arm_nr}_joint2_1" multiplier="1" offset="0"/>
+			</xacro:if>
 		</joint>
 
 		<link name="arm${arm_nr}_link3${suffix}">
@@ -215,12 +218,13 @@
 	</xacro:macro>
 
 	<xacro:macro name="joint3_urdf" params="arm_nr suffix">
-			<joint name="arm${arm_nr}_link3${suffix}" type="continuous">
+			<joint name="arm${arm_nr}_joint3${suffix}" type="continuous">
 			  <parent link="arm${arm_nr}_link3${suffix}"/>
 			  <child link="arm${arm_nr}_link4"/>
 			  <origin xyz="0 0 0.1" rpy="0 0 0"/>
 			  <axis xyz="1 0 0"/>
 			  <dynamics damping="0.00001"/>
+				<mimic joint="arm${arm_nr}_joint2_1" multiplier="-1" offset="0"/>
 			</joint>
 	</xacro:macro>
 
