@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+#include "TypeDefs.hpp"
+
 namespace delta_kinematic {
 
 struct ToolCenterPoint {
@@ -28,11 +30,16 @@ struct ArmAngles {
 };
 
 struct ForwardKinematicResult {
-
 	ToolCenterPoint tcp;
 	ArmAngles arm1;
 	ArmAngles arm2;
 	ArmAngles arm3;
+};
+
+struct Circle {
+	Position center;
+	Vector normal;
+	double radius;
 };
 
 
@@ -41,10 +48,14 @@ public:
 	DeltaKinematic();
 	virtual ~DeltaKinematic();
 
-	std::shared_ptr<ForwardKinematicResult> calculateForwardKinematic(double motor1Angle, double motor2Angle, double motor3Angle);
+	std::shared_ptr<ForwardKinematicResult> calculateForwardKinematic(const double motor1Angle, const double motor2Angle, const double motor3Angle);
 private:
-	double getAlpha(double motorAngle);
-	Eigen::Vector3d getEndpointLink1(int armNr, double alpha);
+	double getAlpha(const double motorAngle);
+	Position getEndpointLink1(int armNr, const double alpha);
+	Position calculateTCP(const Position& endPointLink1, const Position& endPointLink2, const Position& endPointLink3);
+	Circle intersectionTwoSpheres(const Position& centerS1, const Position& centerS2, const double radiusS);
+	Circle intersectionPlaneSphere(const Position& pointPlane, const Vector& normPlane, const Position& centerS, const double radiusS);
+	Position intersectionTwoCircles(const Circle& circle1, const Circle& circle2);
 
 
 private:
