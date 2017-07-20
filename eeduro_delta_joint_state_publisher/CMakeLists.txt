@@ -135,6 +135,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_node
 	src/eeduro_delta_joint_state_publisher_node.cpp
 	src/EEDuroDeltaJointStatePublisher.cpp
+	src/DeltaKinematic.cpp
 )
 
 ## Rename C++ executable without prefix

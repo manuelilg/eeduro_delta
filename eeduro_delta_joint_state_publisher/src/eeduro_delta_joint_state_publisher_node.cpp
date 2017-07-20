@@ -14,10 +14,12 @@ int main(int argc, char** argv) {
 
 	eeduro_delta_joint_state_publisher::EEDuroDeltaJointStatePublisher ed(nodeHandle);
 
-	while(ros::ok()) {
-		ed.publishTestMessage();
-		loop_rate.sleep();
-	}
+//	while(ros::ok()) {
+//		ed.publishTestMessage();
+//		loop_rate.sleep();
+//	}
+
+	ros::spin();
 
 	return 0;
 }
