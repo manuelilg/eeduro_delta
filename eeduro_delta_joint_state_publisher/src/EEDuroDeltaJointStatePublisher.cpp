@@ -20,8 +20,6 @@ EEDuroDeltaJointStatePublisher::~EEDuroDeltaJointStatePublisher() {
 }
 
 void EEDuroDeltaJointStatePublisher::processMessage(const sensor_msgs::JointState::ConstPtr& msg) {
-//	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
-
 	std::vector<double> motorPositions;
 	for(int i = 0; i < 3; i++) {
 		motorPositions.push_back(msg->position.at(i));

@@ -10,8 +10,6 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
-#include <iostream>
-
 #include "TypeDefs.hpp"
 
 namespace delta_kinematic {
