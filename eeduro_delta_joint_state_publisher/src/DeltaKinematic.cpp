@@ -35,10 +35,10 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 //	std::cout << "Size endPointsLink1: " << endPointsLink1.size() << std::endl;
 
 	Position tcp = getTCP(endPointsLink1);
-	std::cout << "TCP: " << std::endl << tcp << std::endl;
+//	std::cout << "TCP: " << std::endl << tcp << std::endl;
 
 	for(int j = 0; j < 3; j++) {
-		Vector orthogonal = getOrthogonal(j, endPointsLink1.at(j), alphas.at(j));
+		Vector orthogonal = getOrthogonal(j, link1s.at(j), alphas.at(j));
 		Vector link3 = tcp - endPointsLink1.at(j);
 		Vector link3projection = getProjectVectorOntoPlane(link3, orthogonal);
 		betas.push_back(getBeta(link1s.at(j), link3projection, orthogonal));
@@ -48,8 +48,8 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 //				<< "ortho: " << orthogonal << std::endl
 //				<< "link3: " << link3 << std::endl
 //				<< "proj: " << link3projection << std::endl
-//				<< "beta: " << beta << std::endl
-//				<< "gamma: " << gamma << std::endl;
+//				<< "beta: " << betas.at(j) << std::endl
+//				<< "gamma: " << gammas.at(j) << std::endl;
 	}
 
 	for(int k = 0; k < 3; k++) {
@@ -59,6 +59,9 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 		armAngles.gamma = gammas.at(k);
 		res->arms.push_back(armAngles);
 	}
+
+
+	res->arms.at(0).delta = M_PI - res->arms.at(0).alpha - res->arms.at(0).beta;
 
 	return res;
 }
@@ -135,14 +138,18 @@ Position DeltaKinematic::getIntersectionTwoCircles(const Circle& circle1, const 
 	return intersection;
 }
 
-Vector DeltaKinematic::getOrthogonal(const double armNr, const Position& endPointLink1, const double alpha) {
+Vector DeltaKinematic::getOrthogonal(const double armNr, const Position& link1, const double alpha) {
 //	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
 	RotMatrix rotZ = RotMatrix(armNr * 2*M_PI/3, Vector::UnitZ());
-	RotMatrix rotArm = RotMatrix(alpha, Vector::UnitX());
-	Position armBase = rotZ * Vector(0.0, -length_center2armBase, 0.0);
-	Vector link1 = endPointLink1 - armBase;
+	RotMatrix rotArm = RotMatrix(-alpha, Vector::UnitX());
+//	Position armBase = rotZ * Vector(0.0, -length_center2armBase, 0.0);
+//	Vector link1 = endPointLink1 - armBase;
 	Vector orthogonal = link1.cross(rotZ*rotArm*Vector::UnitZ());
 	orthogonal.normalize();
+
+//	std::cout << "armBase:" << std::endl << armBase << std::endl;
+//	std::cout << "link1:" << std::endl << link1 << std::endl;
+//	std::cout << "project: " << std::endl << projectionLink3 << std::endl;
 
 	return orthogonal;
 }
@@ -155,6 +162,11 @@ Vector DeltaKinematic::getProjectVectorOntoPlane(const Vector& vector, const Vec
 
 double DeltaKinematic::getBeta(const Vector& link1, const Vector& projectionLink3, const Vector& normal) {
 //	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
+//	std::cout << "normal:" << std::endl << normal << std::endl;
+//	std::cout << "link1:" << std::endl << link1 << std::endl;
+//	std::cout << "project: " << std::endl << projectionLink3 << std::endl;
+//	std::cout << "beta_sign: " << normal.dot(link1.cross(projectionLink3)) << std::endl;
+
 	double betaSign = (normal.dot(link1.cross(projectionLink3)) > 0.0 ? 1.0 : -1.0);
 	double beta = betaSign * acos(link1.dot(projectionLink3) / (link1.norm() * projectionLink3.norm()) );
 	return beta;
@@ -163,7 +175,16 @@ double DeltaKinematic::getBeta(const Vector& link1, const Vector& projectionLink
 double DeltaKinematic::getGamma(const Vector& projectionLink3, const Vector& link3, const Vector& normal) {
 //	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
 	double gammaSign = (normal.cross(projectionLink3).dot(projectionLink3.cross(link3))) > 0.0 ? 1.0 : -1.0;
-	double gamma = gammaSign * acos(link3.dot(projectionLink3) / (link3.norm() * projectionLink3.norm()));
+	double gamma = gammaSign * acos((float) (link3.dot(projectionLink3) / (link3.norm() * projectionLink3.norm())));
+
+//	std::cout << "link3: " << std::endl << link3 << std::endl;
+//	std::cout << "projectionLink3: " << std::endl << projectionLink3 << std::endl;
+//	std::cout << "dot product: " << std::endl << link3.dot(projectionLink3) << std::endl;
+//	std::cout << "norm product: " << link3.norm() * projectionLink3.norm() << std::endl;
+//	std::cout << "division: " <<  link3.dot(projectionLink3) / (link3.norm() * projectionLink3.norm()) << std::endl;
+//	std::cout << "acos: " <<  acos((float) (link3.dot(projectionLink3) / (link3.norm() * projectionLink3.norm()))) << std::endl;
+//	std::cout << "acos(1): " <<  acos(1.000000000001) << std::endl;
+
 	return gamma;
 }
 

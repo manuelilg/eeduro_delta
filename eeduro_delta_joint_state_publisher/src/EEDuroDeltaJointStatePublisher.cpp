@@ -20,7 +20,7 @@ EEDuroDeltaJointStatePublisher::~EEDuroDeltaJointStatePublisher() {
 }
 
 void EEDuroDeltaJointStatePublisher::processMessage(const sensor_msgs::JointState::ConstPtr& msg) {
-	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
+//	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
 
 	std::vector<double> motorPositions;
 	for(int i = 0; i < 3; i++) {
@@ -51,17 +51,17 @@ void EEDuroDeltaJointStatePublisher::mapFKResults2EEDuroDelta(const std::shared_
 		jointState_.position[pos++] = motorPositions.at(i);
 
 		jointState_.name[pos] = armName + "_joint0";
-		jointState_.position[pos++] = fKinResult->arms.at(i).alpha;
+		jointState_.position[pos++] = fKinResult->arms.at(i).alpha - alphaOffset;
 
 		jointState_.name[pos] = armName + "_joint1";
-		jointState_.position[pos++] = fKinResult->arms.at(i).beta;
+		jointState_.position[pos++] = fKinResult->arms.at(i).beta - betaOffset;
 
 		jointState_.name[pos] = armName + "_joint2_1";
-		jointState_.position[pos++] = fKinResult->arms.at(i).gamma;
+		jointState_.position[pos++] = fKinResult->arms.at(i).gamma - gammaOffset;
 
 		if(i == 0) {
 			jointState_.name[pos] = armName + "_joint4";
-			jointState_.position[pos++] = fKinResult->arms.at(i).delta;
+			jointState_.position[pos++] = fKinResult->arms.at(i).delta - deltaOffset;
 		}
 	}
 
