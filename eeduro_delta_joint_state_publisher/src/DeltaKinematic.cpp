@@ -22,7 +22,11 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 	std::vector<double> alphas;
 	std::vector<Vector> link1s;
 	std::vector<Position> endPointsLink1;
-	for(int i = 0; i<3; i++) {
+	std::vector<double> betas;
+	std::vector<double> gammas;
+
+
+	for(int i = 0; i < 3; i++) {
 		alphas.push_back(getAlpha(motorPositions.at(i)));
 //		std::cout << "Size alphas: " << alphas.size() << std::endl;
 		link1s.push_back(getLink1(i, alphas.at(i)));
@@ -37,20 +41,25 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 		Vector orthogonal = getOrthogonal(j, endPointsLink1.at(j), alphas.at(j));
 		Vector link3 = tcp - endPointsLink1.at(j);
 		Vector link3projection = getProjectVectorOntoPlane(link3, orthogonal);
-		double beta = getBeta(link1s.at(j), link3projection, orthogonal);
-		double gamma = getGamma(link3projection, link3, orthogonal);
+		betas.push_back(getBeta(link1s.at(j), link3projection, orthogonal));
+		gammas.push_back(getGamma(link3projection, link3, orthogonal));
 
-		std::cout << "Arm: " << j << std::endl
-				<< "ortho: " << orthogonal << std::endl
-				<< "link3: " << link3 << std::endl
-				<< "proj: " << link3projection << std::endl
-				<< "beta: " << beta << std::endl
-				<< "gamma: " << gamma << std::endl;
+//		std::cout << "Arm: " << j << std::endl
+//				<< "ortho: " << orthogonal << std::endl
+//				<< "link3: " << link3 << std::endl
+//				<< "proj: " << link3projection << std::endl
+//				<< "beta: " << beta << std::endl
+//				<< "gamma: " << gamma << std::endl;
 	}
 
-	res->arm1.alpha = alphas.at(0);
-	res->arm2.alpha = alphas.at(1);
-	res->arm3.alpha = alphas.at(2);
+	for(int k = 0; k < 3; k++) {
+		ArmAngles armAngles;
+		armAngles.alpha = alphas.at(k);
+		armAngles.beta = betas.at(k);
+		armAngles.gamma = gammas.at(k);
+		res->arms.push_back(armAngles);
+	}
+
 	return res;
 }
 
@@ -58,7 +67,6 @@ double DeltaKinematic::getAlpha(const double motorAngle) {
 //	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
 	double offset = 0.0;
 	double transmissionRate = 5103.0/387283.0;
-
 	double alpha = motorAngle * transmissionRate + offset;
 
 	return alpha;

@@ -31,9 +31,7 @@ struct ArmAngles {
 
 struct ForwardKinematicResult {
 	ToolCenterPoint tcp;
-	ArmAngles arm1;
-	ArmAngles arm2;
-	ArmAngles arm3;
+	std::vector<ArmAngles> arms;
 };
 
 struct Circle {

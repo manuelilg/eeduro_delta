@@ -19,18 +19,6 @@ EEDuroDeltaJointStatePublisher::~EEDuroDeltaJointStatePublisher() {
 
 }
 
-void EEDuroDeltaJointStatePublisher::publishTestMessage() {
-	jointState_.header.stamp = ros::Time::now();
-	jointState_.name.resize(1);
-	jointState_.position.resize(1);
-	jointState_.name[0] = "arm1_joint0";
-	jointState_.position[0] = -0.5;
-
-	ROS_INFO("publish now jointState");
-
-	publisher_.publish(jointState_);
-}
-
 void EEDuroDeltaJointStatePublisher::processMessage(const sensor_msgs::JointState::ConstPtr& msg) {
 	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
 
@@ -38,26 +26,80 @@ void EEDuroDeltaJointStatePublisher::processMessage(const sensor_msgs::JointStat
 	for(int i = 0; i < 3; i++) {
 		motorPositions.push_back(msg->position.at(i));
 	}
+	jointState_.header.stamp = msg->header.stamp;
 
+	publishJointStates(motorPositions);
+}
+
+void EEDuroDeltaJointStatePublisher::publishJointStates(const std::vector<double>& motorPositions) {
 	std::shared_ptr<delta_kinematic::ForwardKinematicResult> forwardKinResult;
 	forwardKinResult = deltaKinematic_.calculateForwardKinematic(motorPositions);
-	jointState_.header.stamp = msg->header.stamp;
-	jointState_.name.resize(6);
-	jointState_.position.resize(6);
 
-	jointState_.name[0] = "arm1_motor_joint";
-	jointState_.name[1] = "arm2_motor_joint";
-	jointState_.name[2] = "arm3_motor_joint";
-	jointState_.position[0] = motorPositions.at(0);
-	jointState_.position[1] = motorPositions.at(1);
-	jointState_.position[2] = motorPositions.at(2);
+	mapFKResults2EEDuroDelta(forwardKinResult, motorPositions);
 
-	jointState_.name[3] = "arm1_joint0";
-	jointState_.name[4] = "arm2_joint0";
-	jointState_.name[5] = "arm3_joint0";
-	jointState_.position[3] = forwardKinResult->arm1.alpha;
-	jointState_.position[4] = forwardKinResult->arm2.alpha;
-	jointState_.position[5] = forwardKinResult->arm3.alpha;
+	publisher_.publish(jointState_);
+}
+
+void EEDuroDeltaJointStatePublisher::mapFKResults2EEDuroDelta(const std::shared_ptr<delta_kinematic::ForwardKinematicResult> fKinResult, const std::vector<double>& motorPositions) {
+	jointState_.name.resize(3*4+1);
+	jointState_.position.resize(3*4+1);
+
+	int pos = 0;
+	for(int i = 0; i < 3; i++) {
+		std::string armName = "arm" + std::to_string(i+1);
+		jointState_.name[pos] = armName + "_motor_joint";
+		jointState_.position[pos++] = motorPositions.at(i);
+
+		jointState_.name[pos] = armName + "_joint0";
+		jointState_.position[pos++] = fKinResult->arms.at(i).alpha;
+
+		jointState_.name[pos] = armName + "_joint1";
+		jointState_.position[pos++] = fKinResult->arms.at(i).beta;
+
+		jointState_.name[pos] = armName + "_joint2_1";
+		jointState_.position[pos++] = fKinResult->arms.at(i).gamma;
+
+		if(i == 0) {
+			jointState_.name[pos] = armName + "_joint4";
+			jointState_.position[pos++] = fKinResult->arms.at(i).delta;
+		}
+	}
+
+}
+
+void EEDuroDeltaJointStatePublisher::publishTestMessage() {
+	jointState_.header.stamp = ros::Time::now();
+	jointState_.name.resize(19);
+	jointState_.position.resize(19);
+
+	int pos = 0;
+		for(int i = 0; i < 3; i++) {
+		std::string armName = "arm" + std::to_string(i+1);
+		jointState_.name[pos] = armName + "_motor_joint";
+		jointState_.position[pos++] = 0;
+
+		jointState_.name[pos] = armName + "_joint0";
+		jointState_.position[pos++] = 0;
+
+		jointState_.name[pos] = armName + "_joint1";
+		jointState_.position[pos++] = 0;
+
+		jointState_.name[pos] = armName + "_joint2_1";
+		jointState_.position[pos++] = 0;
+
+		jointState_.name[pos] = armName + "_joint2_2";
+		jointState_.position[pos++] = 0;
+
+		jointState_.name[pos] = armName + "_joint3_1";
+		jointState_.position[pos++] = 0;
+
+		if(i == 0) {
+			jointState_.name[pos] = armName + "_joint4";
+			jointState_.position[pos++] = 0;
+		}
+	}
+
+	ROS_INFO("publish now jointState");
 
 	publisher_.publish(jointState_);
 }

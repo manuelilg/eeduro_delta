@@ -23,6 +23,8 @@ public:
 
 private:
 	void processMessage(const sensor_msgs::JointState::ConstPtr& msg);
+	void publishJointStates(const std::vector<double>& motorPositions);
+	void mapFKResults2EEDuroDelta(const std::shared_ptr<delta_kinematic::ForwardKinematicResult> fKinResult, const std::vector<double>& motorPositions);
 
 private:
 	ros::NodeHandle nodeHandle_;
