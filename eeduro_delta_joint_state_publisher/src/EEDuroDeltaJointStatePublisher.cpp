@@ -32,13 +32,15 @@ void EEDuroDeltaJointStatePublisher::publishTestMessage() {
 }
 
 void EEDuroDeltaJointStatePublisher::processMessage(const sensor_msgs::JointState::ConstPtr& msg) {
-	ROS_INFO("'EEDuroDeltaJointStatePublisher::processMessage' called");
+	std::cout << __PRETTY_FUNCTION__ << " called" << std::endl;
 
-	double motor1Pos = msg->position.at(0);
-	double motor2Pos = msg->position.at(1);
-	double motor3Pos = msg->position.at(2);
+	std::vector<double> motorPositions;
+	for(int i = 0; i < 3; i++) {
+		motorPositions.push_back(msg->position.at(i));
+	}
 
-	std::shared_ptr<delta_kinematic::ForwardKinematicResult> forwardKinResult = deltaKinematic_.calculateForwardKinematic(motor1Pos, motor2Pos, motor3Pos);
+	std::shared_ptr<delta_kinematic::ForwardKinematicResult> forwardKinResult;
+	forwardKinResult = deltaKinematic_.calculateForwardKinematic(motorPositions);
 	jointState_.header.stamp = msg->header.stamp;
 	jointState_.name.resize(6);
 	jointState_.position.resize(6);
@@ -46,9 +48,9 @@ void EEDuroDeltaJointStatePublisher::processMessage(const sensor_msgs::JointStat
 	jointState_.name[0] = "arm1_motor_joint";
 	jointState_.name[1] = "arm2_motor_joint";
 	jointState_.name[2] = "arm3_motor_joint";
-	jointState_.position[0] = motor1Pos;
-	jointState_.position[1] = motor2Pos;
-	jointState_.position[2] = motor3Pos;
+	jointState_.position[0] = motorPositions.at(0);
+	jointState_.position[1] = motorPositions.at(1);
+	jointState_.position[2] = motorPositions.at(2);
 
 	jointState_.name[3] = "arm1_joint0";
 	jointState_.name[4] = "arm2_joint0";

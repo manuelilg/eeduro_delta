@@ -48,15 +48,20 @@ public:
 	DeltaKinematic();
 	virtual ~DeltaKinematic();
 
-	std::shared_ptr<ForwardKinematicResult> calculateForwardKinematic(const double motor1Angle, const double motor2Angle, const double motor3Angle);
+	std::shared_ptr<ForwardKinematicResult> calculateForwardKinematic(const std::vector<double>& motorPositions);
 private:
 	double getAlpha(const double motorAngle);
-	Position getEndpointLink1(int armNr, const double alpha);
-	Position calculateTCP(const Position& endPointLink1, const Position& endPointLink2, const Position& endPointLink3);
-	Circle intersectionTwoSpheres(const Position& centerS1, const Position& centerS2, const double radiusS);
-	Circle intersectionPlaneSphere(const Position& pointPlane, const Vector& normPlane, const Position& centerS, const double radiusS);
-	Position intersectionTwoCircles(const Circle& circle1, const Circle& circle2);
-
+	Vector getLink1(const double armNr, const double alpha);
+	Position getEndpointLink1(const double armNr, const Vector& link1);
+	Position getTCP(const std::vector<Position>& endPointsLink1);
+//	void calculateAngles(std::shared_ptr<ForwardKinematicResult> result, const std::vector<double>& alphas, const std::vector<Vector>& link1s, const std::vector<Position>& endPointsLink1, const Position& tcp);
+	Circle getIntersectionTwoSpheres(const Position& centerS1, const Position& centerS2, const double radiusS);
+	Circle getIntersectionPlaneSphere(const Position& pointPlane, const Vector& normPlane, const Position& centerS, const double radiusS);
+	Position getIntersectionTwoCircles(const Circle& circle1, const Circle& circle2);
+	Vector getOrthogonal(const double armNr, const Position& endPointLink1, const double alpha);
+	Vector getProjectVectorOntoPlane(const Vector& vector, const Vector& normalPlane);
+	double getBeta(const Vector& link1, const Vector& projectionLink3, const Vector& normal);
+	double getGamma(const Vector& projectionLink3, const Vector& link3, const Vector& normal);
 
 private:
 	double length_center2armBase = 0.1/sqrt(3) -0.028;
