@@ -52,9 +52,10 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 }
 
 double DeltaKinematic::getAlpha(const double motorAngle) {
-	double offset = 0.0;
-	double transmissionRate = 5103.0/387283.0;
-	double alpha = motorAngle * transmissionRate + offset;
+	double offset = -27.0/180.0*M_PI;
+//	double transmissionRate = 5103.0/387283.0;
+//	double alpha = motorAngle * transmissionRate + offset;
+	double alpha = motorAngle + offset;
 
 	return alpha;
 }

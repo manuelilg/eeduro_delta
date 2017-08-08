@@ -11,8 +11,8 @@ namespace eeduro_delta_joint_state_publisher {
 EEDuroDeltaJointStatePublisher::EEDuroDeltaJointStatePublisher(ros::NodeHandle& nodeHandle) :
 		nodeHandle_(nodeHandle) {
 	publisher_ = nodeHandle_.advertise<sensor_msgs::JointState>("joint_states", 1);
-	subscriber_ = nodeHandle_.subscribe("motor_angles", 1, &EEDuroDeltaJointStatePublisher::processMessage, this);
-
+//	subscriber_ = nodeHandle_.subscribe("motor_angles", 1, &EEDuroDeltaJointStatePublisher::processMessage, this);
+	subscriber_ = nodeHandle_.subscribe("/eeduro_delta/joint_states", 1, &EEDuroDeltaJointStatePublisher::processMessage, this);
 }
 
 EEDuroDeltaJointStatePublisher::~EEDuroDeltaJointStatePublisher() {

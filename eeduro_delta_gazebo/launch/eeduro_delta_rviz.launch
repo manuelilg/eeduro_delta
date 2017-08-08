@@ -1,0 +1,26 @@
+<launch>
+	<arg name="paused" default="true"/>
+
+	<param name="robot_description" command="xacro '$(find eeduro_delta_description)/urdf/eeduro_delta.urdf.xacro'"/>
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="paused" value="$(arg paused)"/>
+	</include>
+
+	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+		args="-urdf -model eeduro_delta -param robot_description"/>
+
+	<node name="eeduro_delta_joint_state_publisher" pkg="eeduro_delta_joint_state_publisher" type="eeduro_delta_joint_state_publisher_node" output="screen"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
+    <param name="rate" value="1000"/>
+		<rosparam param="source_list">["/eeduro_delta_joint_state_publisher/joint_states"]</rosparam>
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+		<param name="publish_frequency" value="1000.0"/>
+	</node>
+
+  <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find eeduro_delta_description)/launch/eeduro_delta.rviz"/>
+
+</launch>
