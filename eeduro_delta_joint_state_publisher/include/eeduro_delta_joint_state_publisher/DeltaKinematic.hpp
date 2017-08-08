@@ -46,7 +46,6 @@ public:
 
 	std::shared_ptr<ForwardKinematicResult> calculateForwardKinematic(const std::vector<double>& motorPositions);
 private:
-	double getAlpha(const double motorAngle);
 	Vector getLink1(const double armNr, const double alpha);
 	Position getEndpointLink1(const double armNr, const Vector& link1);
 	Position getTCP(const std::vector<Position>& endPointsLink1);

@@ -33,10 +33,10 @@ private:
 	sensor_msgs::JointState jointState_;
 	delta_kinematic::DeltaKinematic deltaKinematic_;
 
-	double alphaOffset = -27.0/180.0*M_PI;
-	double betaOffset = -0.8373228137897161 -(90.0-27.0)/180.0*M_PI;
+	double alphaOffset = 0.0;
+	double betaOffset =  -2.49368823859929645;
 	double gammaOffset = 0.0;
-	double deltaOffset = -M_PI_2 + 0.8373228137897161;
+	double deltaOffset = 5.63528089218908956;
 };
 
 

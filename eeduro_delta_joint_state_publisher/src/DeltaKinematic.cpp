@@ -24,7 +24,7 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 	std::vector<double> gammas;
 
 	for(int i = 0; i < 3; i++) {
-		alphas.push_back(getAlpha(motorPositions.at(i)));
+		alphas.push_back(motorPositions.at(i));
 		link1s.push_back(getLink1(i, alphas.at(i)));
 		endPointsLink1.push_back(getEndpointLink1(i, link1s.at(i)));
 	}
@@ -49,15 +49,6 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 	res->arms.at(0).delta = M_PI - res->arms.at(0).alpha - res->arms.at(0).beta;
 
 	return res;
-}
-
-double DeltaKinematic::getAlpha(const double motorAngle) {
-	double offset = -27.0/180.0*M_PI;
-//	double transmissionRate = 5103.0/387283.0;
-//	double alpha = motorAngle * transmissionRate + offset;
-	double alpha = motorAngle + offset;
-
-	return alpha;
 }
 
 Vector DeltaKinematic::getLink1(const double armNr, const double alpha) {

@@ -6,7 +6,7 @@
 	<xacro:property name="dist_origin2arm_xy_plane" value="${0.1/sqrt(3) -0.005}"/>
 	<xacro:property name="angle1_init" value="0.0"/>
 	<xacro:property name="angle2_init" value="-2.49368823859929645"/>
-	<xacro:property name="angle3_init" value="5.63528089218908956"/>
+	<xacro:property name="angle3_init" value="-0.64790441499049692"/>
 	
 
 	<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta_inertial.urdf.xacro"/>
