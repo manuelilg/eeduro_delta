@@ -4,6 +4,10 @@
 	<!-- <xacro:property name="pi" value="3.1415926535897931"/> -->
 	<xacro:property name="dist_origin2arm_z" value="0.21"/>
 	<xacro:property name="dist_origin2arm_xy_plane" value="${0.1/sqrt(3) -0.005}"/>
+	<xacro:property name="angle1_init" value="0.0"/>
+	<xacro:property name="angle2_init" value="-2.49368823859929645"/>
+	<xacro:property name="angle3_init" value="5.63528089218908956"/>
+	
 
 	<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta_inertial.urdf.xacro"/>
 	<!--<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta.gazebo.xacro"/>-->
@@ -42,9 +46,9 @@
 		arm_end_child="tool" 
 		arm_nr="1" 
 		joint4_type="urdf"
-		angle1="${(-27)/180.0*pi}"
-		angle2="${-0.8373228137897161 -(90-27)/180.0*pi}"
-		angle3="${-pi/2 + 0.8373228137897161}"
+		angle1="${angle1_init}"
+		angle2="${angle2_init}"
+		angle3="${angle3_init}"
 		dist_xy="${dist_origin2arm_xy_plane}"
 		x="0"		y="0"		z="${dist_origin2arm_z}"
 		roll="0"		pitch="0"		yaw="${-pi/2}"
@@ -55,9 +59,9 @@
     arm_end_child="tool"
     arm_nr="2"
     joint4_type="sdf"
-    angle1="${(-27)/180.0*pi}"
-    angle2="${-0.8373228137897161 -(90-27)/180.0*pi}"
-    angle3="${-pi/2 + 0.8373228137897161}"
+		angle1="${angle1_init}"
+		angle2="${angle2_init}"
+		angle3="${angle3_init}"
     dist_xy="${dist_origin2arm_xy_plane}"
     x="0"   y="0"   z="${dist_origin2arm_z}"
     roll="0"    pitch="0"   yaw="${pi/6}"
@@ -68,9 +72,9 @@
     arm_end_child="tool"
     arm_nr="3"
     joint4_type="sdf"
-    angle1="${(-27)/180.0*pi}"
-    angle2="${-0.8373228137897161 -(90-27)/180.0*pi}"
-    angle3="${-pi/2 + 0.8373228137897161}"
+		angle1="${angle1_init}"
+		angle2="${angle2_init}"
+		angle3="${angle3_init}"
     dist_xy="${dist_origin2arm_xy_plane}"
     x="0"   y="0"   z="${dist_origin2arm_z}"
     roll="0"    pitch="0"   yaw="${5*pi/6}"
