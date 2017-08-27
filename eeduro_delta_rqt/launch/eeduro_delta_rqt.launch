@@ -1,0 +1,6 @@
+<launch>
+  <node name="rqt" pkg="rqt_gui" type="rqt_gui" required="true"
+    args="--perspective-file $(find eeduro_delta_rqt)/perspective/delta.perspective"/>
+
+</launch>
+
