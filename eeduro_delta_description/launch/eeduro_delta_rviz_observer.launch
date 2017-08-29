@@ -1,0 +1,7 @@
+<launch>
+  <param name="robot_description" command="xacro '$(find eeduro_delta_description)/urdf/eeduro_delta.urdf.xacro'"/>
+
+	<node name="" pkg="rviz" type="rviz" output="screen" args="-d $(find eeduro_delta_description)/launch/eeduro_delta.rviz"/>
+
+</launch>
+
