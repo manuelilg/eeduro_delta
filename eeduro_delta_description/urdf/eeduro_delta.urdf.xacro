@@ -103,6 +103,30 @@
 	  <selfCollide>true</selfCollide>
 	</gazebo>
 
+	<gazebo reference="arm1_link1">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="arm2_link1">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="arm3_link1">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="arm1_link2">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="arm2_link2">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
+	<gazebo reference="arm3_link2">
+	  <selfCollide>true</selfCollide>
+	</gazebo>
+
 	<gazebo reference="tool">
 	  <selfCollide>true</selfCollide>
 	</gazebo>
@@ -141,6 +165,12 @@
 		      <mesh filename="package://eeduro_delta_description/meshes/link1_scaled.dae"/>
 		    </geometry>
 		  </visual>
+			<collision>
+				<origin xyz="0 0 0.024" rpy="0 0 0"/>
+				<geometry>
+					<box size="0.006 0.012 0.06 "/>
+				</geometry>
+			</collision>
 			<xacro:link1_inertial/>
 		</link>
 
@@ -177,6 +207,12 @@
 		      <mesh filename="package://eeduro_delta_description/meshes/link2_scaled.dae"/>
 		    </geometry>
 		  </visual>
+			<collision>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <geometry>
+					<box size="0.044 0.008 0.006"/>
+				</geometry>
+			</collision>
 			<xacro:link2_inertial/>
 		</link>
 
