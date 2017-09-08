@@ -10,7 +10,7 @@
 	
 
 	<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta_inertial.urdf.xacro"/>
-	<!--<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta.gazebo.xacro"/>-->
+	<xacro:include filename="$(find eeduro_delta_description)/urdf/eeduro_delta.gazebo"/>
 
 	<link name="world"/>
 
@@ -98,38 +98,17 @@
 		<xacro:tool_inertial/>
 	</link>
 
+	<transmission name="tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="arm1_joint0">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="motor1">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
 
-	<gazebo reference="base_link">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="arm1_link1">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="arm2_link1">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="arm3_link1">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="arm1_link2">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="arm2_link2">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="arm3_link2">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
-
-	<gazebo reference="tool">
-	  <selfCollide>true</selfCollide>
-	</gazebo>
 
 	<!-- x y z are the center of the robot, in the high:of the mounting-points for the arms -->
 	<xacro:macro name="delta_arm" params="parent arm_end_child arm_nr joint4_type angle1 angle2 angle3 dist_xy x y z roll pitch yaw">
@@ -319,14 +298,5 @@
 	    </joint>
 		</gazebo>
   </xacro:macro>
-
-	<gazebo>
-		<plugin name="gazebo_ros_joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
-			<robotNamespace>/eeduro_delta</robotNamespace>
-			<jointName>arm1_joint0, arm2_joint0, arm3_joint0</jointName>
-			<updateRate>1000</updateRate>
-			<alwaysOn>true</alwaysOn>
-		</plugin>
-	</gazebo>
 
 </robot>
