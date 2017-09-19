@@ -16,7 +16,8 @@
     </plugin>
   </gazebo>
 
- <gazebo reference="base_link">
+
+  <gazebo reference="base_link">
     <selfCollide>true</selfCollide>
   </gazebo>
 
@@ -35,7 +36,6 @@
   <gazebo reference="arm1_link2">
     <selfCollide>true</selfCollide>
   </gazebo>
-
 
   <gazebo reference="arm2_link2">
     <selfCollide>true</selfCollide>

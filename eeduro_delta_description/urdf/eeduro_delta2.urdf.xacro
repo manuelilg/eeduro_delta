@@ -135,7 +135,7 @@
 
 	<!-- x y z are the center of the robot, in the high:of the mounting-points for the arms -->
 	<xacro:macro name="delta_arm" params="parent arm_end_child arm_nr joint4_type angle1 angle2 angle3 dist_xy x y z roll pitch yaw">
-		<joint name="arm${arm_nr}_motor_joint" type="continuous">
+<!--		<joint name="arm${arm_nr}_motor_joint" type="continuous">
 		  <parent link="${parent}"/>
 		  <child link="arm${arm_nr}_motor"/>
 		  <origin xyz="${x +cos(yaw)*dist_xy -sin(yaw)*(0.04)} ${y +sin(yaw)*dist_xy +cos(yaw)*(0.04)} ${z -0.015}" rpy="${roll -pi/2} ${pitch} ${yaw -pi/2}"/>
@@ -150,7 +150,7 @@
 	    </geometry>
 	  </visual>
 		<xacro:motor_inertial/>
-		</link>
+		</link> -->
 
 		<joint name="arm${arm_nr}_joint0" type="continuous">
 		  <parent link="${parent}"/>
@@ -176,7 +176,7 @@
 			<xacro:link1_inertial/>
 		</link>
 
-		<gazebo>
+<!--		<gazebo>
 		  <joint name="arm${arm_nr}_gearbox" type="gearbox">
 		    <parent>arm${arm_nr}_motor</parent>
 		    <child>arm${arm_nr}_link1</child>
@@ -191,7 +191,7 @@
 		      <xyz>1 0 0</xyz>
 		    </axis2>
 		  </joint>
-		</gazebo>
+		</gazebo> -->
 
 
 		<joint name="arm${arm_nr}_joint1" type="continuous">
