@@ -7,6 +7,10 @@
 #pragma once
 
 #include <memory>
+#include <vector>
+
+#include <iostream>
+
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
@@ -45,6 +49,7 @@ public:
 	virtual ~DeltaKinematic();
 
 	std::shared_ptr<ForwardKinematicResult> calculateForwardKinematic(const std::vector<double>& motorPositions);
+	std::vector<double> inverse(const Position& tcp);
 private:
 	Vector getLink1(const double armNr, const double alpha);
 	Position getEndpointLink1(const double armNr, const Vector& link1);
@@ -57,6 +62,7 @@ private:
 	Vector getProjectVectorOntoPlane(const Vector& vector, const Vector& normalPlane);
 	double getBeta(const Vector& link1, const Vector& projectionLink3, const Vector& normal);
 	double getGamma(const Vector& projectionLink3, const Vector& link3, const Vector& normal);
+
 
 private:
 	double length_center2armBase = 0.1/sqrt(3) -0.028;

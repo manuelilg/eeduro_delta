@@ -31,6 +31,8 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 
 	Position tcp = getTCP(endPointsLink1);
 
+	std::cout << "TCP x: " << tcp[0] << "y: " << tcp[1] << "z: " << tcp[2] << std::endl;
+
 	for(int j = 0; j < 3; j++) {
 		Vector orthogonal = getOrthogonal(j, link1s.at(j), alphas.at(j));
 		Vector link3 = tcp - endPointsLink1.at(j);
@@ -133,6 +135,23 @@ double DeltaKinematic::getGamma(const Vector& projectionLink3, const Vector& lin
 	double gamma = gammaSign * acos((float) (link3.dot(projectionLink3) / (link3.norm() * projectionLink3.norm())));
 
 	return gamma;
+}
+
+std::vector<double> DeltaKinematic::inverse(const Position& tcp) {
+	std::vector<double> alphas;
+
+	Vector nullVec;
+	for (int i = 0; i < 3; ++i) {
+		Vector mountingPointLink1 = getEndpointLink1(i, nullVec); // method name is wrong for this case
+		Vector mpL2TCP = tcp - mountingPointLink1;
+		Vector projection = getProjectVectorOntoPlane(mpL2TCP, getOrthogonal(i, (Position) getLink1(i, 0.0), 0.0));
+		double distPlane2Tcp = (mpL2TCP - projection).norm();
+		double lengthProjectionLink3 = sqrt(length_link3*length_link3 - distPlane2Tcp*distPlane2Tcp);
+		double alpha = M_PI/2 - (acos((lengthProjectionLink3*lengthProjectionLink3 - projection.norm()*projection.norm() - length_link1*length_link1) /(-2*projection.norm()*length_link1) ));
+		alphas.push_back(alpha);
+	}
+
+	return alphas;
 }
 
 }  // namespace delta_kinematic
