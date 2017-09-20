@@ -109,7 +109,7 @@ void EEDuroDeltaJointStatePublisher::publishTestMessage() {
 
 void EEDuroDeltaJointStatePublisher::processCommand(const geometry_msgs::PoseStamped::ConstPtr& msg) {
 	geometry_msgs::Point pos = msg->pose.position;
-	delta_kinematic::Position tcp(pos.x, pos.y, pos.z);
+	delta_kinematic::Position tcp(pos.x, pos.y, pos.z-0.175);
 
 	std::vector<double> alphas = deltaKinematic_.inverse(tcp);
 

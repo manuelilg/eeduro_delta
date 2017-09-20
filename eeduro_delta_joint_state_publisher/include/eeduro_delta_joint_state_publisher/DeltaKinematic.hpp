@@ -62,6 +62,7 @@ private:
 	Vector getProjectVectorOntoPlane(const Vector& vector, const Vector& normalPlane);
 	double getBeta(const Vector& link1, const Vector& projectionLink3, const Vector& normal);
 	double getGamma(const Vector& projectionLink3, const Vector& link3, const Vector& normal);
+	double getAngleBetween(const Vector& v1, const Vector& v2, const Vector& normal);
 
 
 private:

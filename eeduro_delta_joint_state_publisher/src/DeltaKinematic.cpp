@@ -31,7 +31,7 @@ std::shared_ptr<ForwardKinematicResult> DeltaKinematic::calculateForwardKinemati
 
 	Position tcp = getTCP(endPointsLink1);
 
-	std::cout << "TCP x: " << tcp[0] << "y: " << tcp[1] << "z: " << tcp[2] << std::endl;
+	std::cout << "TCP x: " << tcp[0] << "y: " << tcp[1] << "z: " << tcp[2]+0.175 << std::endl;
 
 	for(int j = 0; j < 3; j++) {
 		Vector orthogonal = getOrthogonal(j, link1s.at(j), alphas.at(j));
@@ -137,18 +137,38 @@ double DeltaKinematic::getGamma(const Vector& projectionLink3, const Vector& lin
 	return gamma;
 }
 
+double DeltaKinematic::getAngleBetween(const Vector& v1, const Vector& v2, const Vector& normal) {
+	int counter = 0;
+//	if (!(v1.dot(normal) == v1.norm() * normal.norm() && v2.dot(normal) == v2.norm() * normal.norm())) {
+//		std::cout << counter++ << " ERROR in getAngleBetween(...) !!!" << std::endl;
+//		return 0.0;
+//	}
+
+	double angleSign = (normal.dot(v1.cross(v2))) > 0.0 ? 1.0 : -1.0;
+	double angle = angleSign * acos((float) ( v1.dot(v2) / (v1.norm() * v2.norm())) );
+	return angle;
+}
+
 std::vector<double> DeltaKinematic::inverse(const Position& tcp) {
 	std::vector<double> alphas;
-
+//	std::cout << "############################" << std::endl;
 	Vector nullVec;
 	for (int i = 0; i < 3; ++i) {
 		Vector mountingPointLink1 = getEndpointLink1(i, nullVec); // method name is wrong for this case
 		Vector mpL2TCP = tcp - mountingPointLink1;
-		Vector projection = getProjectVectorOntoPlane(mpL2TCP, getOrthogonal(i, (Position) getLink1(i, 0.0), 0.0));
+//			std::cout << "Arm " << i << " to tcp: " << std::endl << mpL2TCP << std::endl;
+		Vector normalPlane = getOrthogonal(i, (Position) getLink1(i, 0.0), 0.0);
+		Vector projection = getProjectVectorOntoPlane(mpL2TCP, normalPlane);
+//			std::cout << "Arm " << i << " projection: " << std::endl << projection << std::endl;
+		double angle = getAngleBetween(projection, Vector(0.0, 0.0, -1.0), normalPlane);
+//			std::cout << "angle: " << angle << std::endl;
 		double distPlane2Tcp = (mpL2TCP - projection).norm();
+		Vector temp = normalPlane * mpL2TCP.dot(normalPlane);
+//			std::cout << "dist == temp: " << (distPlane2Tcp == temp.norm()) << std::endl;
 		double lengthProjectionLink3 = sqrt(length_link3*length_link3 - distPlane2Tcp*distPlane2Tcp);
-		double alpha = M_PI/2 - (acos((lengthProjectionLink3*lengthProjectionLink3 - projection.norm()*projection.norm() - length_link1*length_link1) /(-2*projection.norm()*length_link1) ));
-		alphas.push_back(alpha);
+//			std::cout << "length projection link 3: " << lengthProjectionLink3 << std::endl;
+		double alpha = M_PI/2 + angle - (acos((lengthProjectionLink3*lengthProjectionLink3 - projection.norm()*projection.norm() - length_link1*length_link1) /(-2*projection.norm()*length_link1) ));
+		alphas.push_back(-alpha);
 	}
 
 	return alphas;
